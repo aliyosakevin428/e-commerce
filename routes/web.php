@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\CategoryController;
+
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/about', [WelcomeController::class, 'about'])->name('about');
@@ -26,6 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::apiResource('role', RoleController::class);
     Route::apiResource('permission', PermissionController::class);
     Route::apiResource('media', MediaController::class);
+    Route::put('category/bulk', [CategoryController::class, 'bulkUpdate'])->name('category.bulk.update');
+    Route::delete('category/bulk', [CategoryController::class, 'bulkDelete'])->name('category.bulk.destroy');
+    Route::apiResource('category', CategoryController::class);
 });
 
 require __DIR__.'/settings.php';
