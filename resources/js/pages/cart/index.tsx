@@ -193,7 +193,7 @@ const CartList: FC<Props> = ({ carts, query, couriers }) => {
           <CardContent className="space-y-3">
             <p className="text-sm">Pilih Kurir:</p>
             <Select onValueChange={setKurir}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-fit">
                 <SelectValue placeholder="Pilih kurir pengiriman" />
               </SelectTrigger>
               <SelectContent>
