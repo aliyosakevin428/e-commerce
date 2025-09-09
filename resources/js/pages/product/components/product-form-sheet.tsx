@@ -1,4 +1,5 @@
 import FormControl from '@/components/form-control';
+import MoneyInput from '@/components/money-input';
 import SubmitButton from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -76,7 +77,7 @@ const ProductFormSheet: FC<Props> = ({ children, product, purpose }) => {
               <Input type="text" placeholder="Name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
             </FormControl>
             <FormControl label="Price">
-              <Input type="number" placeholder="Harga" value={data.price} onChange={(e) => setData('price', e.target.value)} />
+              <MoneyInput placeholder="Harga" value={Number(data.price)} onValueChange={(e) => setData('price', Number(e))} />
             </FormControl>
             <FormControl label="Description">
               <Textarea placeholder="Deskripsi" value={data.description} onChange={(e) => setData('description', e.target.value)} />
