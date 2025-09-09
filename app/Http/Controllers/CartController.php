@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCartRequest;
 use App\Http\Requests\BulkUpdateCartRequest;
 use App\Http\Requests\BulkDeleteCartRequest;
 use App\Models\Cart;
+use App\Models\Courier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -30,6 +31,7 @@ class CartController extends Controller
         return Inertia::render('cart/index', [
             'carts' => $data->get(),
             'query' => $request->input(),
+            'couriers' => Courier::get(),
             'permissions' => [
                 'canAdd' => $this->user->can("create cart"),
                 'canShow' => $this->user->can("show cart"),

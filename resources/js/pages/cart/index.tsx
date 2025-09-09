@@ -17,15 +17,19 @@ import CartFilterSheet from './components/cart-filter-sheet';
 import CartFormSheet from './components/cart-form-sheet';
 import { formatRupiah } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Courier } from '@/types/courier';
 
 type Props = {
   carts: Cart[];
+  couriers: Courier[];
   query: { [key: string]: string };
 };
 
-const CartList: FC<Props> = ({ carts, query }) => {
+const CartList: FC<Props> = ({ carts, query, couriers }) => {
   const [ids, setIds] = useState<number[]>([]);
   const [cari, setCari] = useState('');
+  const [kurir, setKurir] = useState('');
 
   const { permissions } = usePage<SharedData>().props;
 
@@ -186,7 +190,21 @@ const CartList: FC<Props> = ({ carts, query }) => {
               )}
             </CardDescription>
           </CardHeader>
-          <CardContent>Pilih Kurir</CardContent>
+          <CardContent className="space-y-3">
+            <p className="text-sm">Pilih Kurir:</p>
+            <Select onValueChange={setKurir}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Pilih kurir pengiriman" />
+              </SelectTrigger>
+              <SelectContent>
+                {couriers.map((c) => (
+                  <SelectItem key={c.id} value={c.id.toString()}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </CardContent>
           <CardFooter>
             <Button>Checkout</Button>
           </CardFooter>
