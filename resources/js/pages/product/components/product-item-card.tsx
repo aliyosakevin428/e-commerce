@@ -5,6 +5,7 @@ import { Product } from '@/types/product';
 import { router } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 import { FC } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   product: Product;
@@ -18,7 +19,12 @@ const ProductItemCard: FC<Props> = ({ product }) => {
         product_id: product.id,
         quantity: 1,
       },
-      { preserveScroll: true },
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast.success(`${product.name} berhasil dimasukkan ke keranjang!`);
+        },
+      },
     );
   };
 

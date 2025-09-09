@@ -7,8 +7,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { SharedData } from '@/types';
 import { Cart } from '@/types/cart';
-import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Edit, Filter, Folder, Minus, Plus, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import CartBulkDeleteDialog from './components/cart-bulk-delete-dialog';
 import CartBulkEditSheet from './components/cart-bulk-edit-sheet';
@@ -16,7 +16,6 @@ import CartDeleteDialog from './components/cart-delete-dialog';
 import CartFilterSheet from './components/cart-filter-sheet';
 import CartFormSheet from './components/cart-form-sheet';
 import { formatRupiah } from '@/lib/utils';
-import { format } from 'path';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 type Props = {
@@ -29,6 +28,13 @@ const CartList: FC<Props> = ({ carts, query }) => {
   const [cari, setCari] = useState('');
 
   const { permissions } = usePage<SharedData>().props;
+
+  const updateQuantity = (cartId: number, newQuantity: number) => {
+    if (newQuantity < 1) return;
+
+    router.put(route('cart.update', cartId), { quantity: newQuantity }, { preserveScroll: true });
+  };
+
 
   return (
     <AppLayout
@@ -125,7 +131,19 @@ const CartList: FC<Props> = ({ carts, query }) => {
                 </TableCell>
                 <TableCell>{cart.product?.name}</TableCell>
                 <TableCell>{formatRupiah(cart.product.price)}</TableCell>
-                <TableCell>{cart.quantity}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Button size="icon" variant="outline" onClick={() => updateQuantity(cart.id, cart.quantity - 1)} disabled={cart.quantity <= 1}>
+                      <Minus className="h-4 w-4" />
+                    </Button>
+
+                    <span className="w-8 text-center">{cart.quantity}</span>
+
+                    <Button size="icon" variant="outline" onClick={() => updateQuantity(cart.id, cart.quantity + 1)}>
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
                 <TableCell>{formatRupiah(cart.product.price * cart.quantity)}</TableCell>
                 <TableCell>
                   {permissions?.canShow && (
@@ -157,20 +175,23 @@ const CartList: FC<Props> = ({ carts, query }) => {
         </TableBody>
       </Table>
 
-    {ids.length > 0 && (
-      <Card>
-        <CardHeader>
+      {ids.length > 0 && (
+        <Card>
+          <CardHeader>
             <CardTitle>CheckOut</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">Total Price: {formatRupiah(carts.reduce((total, cart) => total + cart.product.price * cart.quantity, 0))}</CardDescription>
-        </CardHeader>
-        <CardContent>
-            Pilih Kurir
-        </CardContent>
-        <CardFooter>
+            <CardDescription className="text-sm text-muted-foreground">
+              Total Price:{' '}
+              {formatRupiah(
+                carts.filter((cart) => ids.includes(cart.id)).reduce((total, cart) => total + Number(cart.product.price) * cart.quantity, 0),
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>Pilih Kurir</CardContent>
+          <CardFooter>
             <Button>Checkout</Button>
-        </CardFooter>
-      </Card>
-    )}
+          </CardFooter>
+        </Card>
+      )}
     </AppLayout>
   );
 };

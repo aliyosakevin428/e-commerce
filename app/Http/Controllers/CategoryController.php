@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $this->pass("index category");
-        
+
         $data = Category::query()
             //->with(['media'])
             ->when($request->name, function($q, $v){
@@ -60,6 +60,8 @@ class CategoryController extends Controller
             return abort(403);
         }
 
+        $category->load(['products']); // cukup ini
+
         return Inertia::render('category/show', [
             'category' => $category,
             'permissions' => [
@@ -68,6 +70,7 @@ class CategoryController extends Controller
             ]
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -112,7 +115,7 @@ class CategoryController extends Controller
         Category::whereIn('id', $data['category_ids'])->delete();
     }
 
-    
-    
-    
+
+
+
 }

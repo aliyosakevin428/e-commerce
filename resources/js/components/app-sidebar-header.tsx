@@ -1,7 +1,7 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { SharedData, type BreadcrumbItem as BreadcrumbItemType } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 import ThemeToggler from './theme-toggler';
 import { Badge } from './ui/badge';
@@ -18,7 +18,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
         </div>
 
         <div className="space-x-2">
-          <Button variant={'outline'}>
+          <Button variant="outline" onClick={() => router.get(route('cart.index'))}>
             <ShoppingCart />
             <Badge>{auth.cartCount}</Badge>
           </Button>
