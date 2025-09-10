@@ -1,7 +1,9 @@
-import ProductItemCard from '@/pages/product/components/product-item-card'; // pastikan path benar
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import ProductItemCard from '@/pages/product/components/product-item-card'; // pastikan path benar
 import { Category } from '@/types/category';
+import { Link } from '@inertiajs/react';
 import { FC } from 'react';
 
 type Props = {
@@ -31,6 +33,13 @@ const ShowCategory: FC<Props> = ({ category }) => {
       ) : (
         <p className="text-muted-foreground">Belum ada produk di kategori ini.</p>
       )}
+      <div className="mt-4 flex justify-end gap-2">
+        <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
+          <Link href={route('category.index')} method="get">
+            Kembali
+          </Link>
+        </Button>
+      </div>
     </AppLayout>
   );
 };
