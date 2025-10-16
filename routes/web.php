@@ -14,6 +14,8 @@ use App\Http\Controllers\CourierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReviewController;
+
 
 
 
@@ -66,6 +68,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('transaction/{transaction}/upload-media', [TransactionController::class, 'uploadMedia'])->name('transaction.upload-media');
     Route::apiResource('transaction', TransactionController::class);
     Route::resource('order', OrderController::class);
+    Route::put('review/bulk', [ReviewController::class, 'bulkUpdate'])->name('review.bulk.update');
+    Route::delete('review/bulk', [ReviewController::class, 'bulkDelete'])->name('review.bulk.destroy');
+    Route::post('review/{review}/upload-media', [ReviewController::class, 'uploadMedia'])->name('review.upload-media');
+    Route::apiResource('review', ReviewController::class);
 });
 
 require __DIR__.'/settings.php';

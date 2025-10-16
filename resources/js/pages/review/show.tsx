@@ -1,18 +1,18 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Cart } from '@/types/cart';
+import { Review } from '@/types/review';
 import { FC } from 'react';
 
 type Props = {
-  cart: Cart;
+  review: Review;
 };
 
-const ShowCart: FC<Props> = ({ cart }) => {
+const ShowReview: FC<Props> = ({ review }) => {
   return (
-    <AppLayout title="Detail Cart" description="Detail cart">
+    <AppLayout title="Detail Review" description="Detail review">
       <Card>
         <CardHeader>
-          <CardTitle>{ cart.product.name }</CardTitle>
+          <CardTitle>{ review.name }</CardTitle>
           <CardDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, quo impedit cupiditate voluptas culpa magnam itaque distinctio at ullam,
             beatae perferendis doloremque facilis mollitia, quod corporis. Autem voluptatum ipsum placeat.
@@ -23,4 +23,4 @@ const ShowCart: FC<Props> = ({ cart }) => {
   );
 };
 
-export default ShowCart;
+export default ShowReview;

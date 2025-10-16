@@ -1,24 +1,22 @@
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { dateFull, formatRupiah, strLimit } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Transaction } from '@/types/transaction';
 import { Link, usePage } from '@inertiajs/react';
-import { Calendar1, Edit, Filter, Folder, FolderArchive, Image, Plus, Trash2 } from 'lucide-react';
+import { Calendar1, Edit, Filter, Folder, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
-import TransactionDeleteDialog from './components/transaction-delete-dialog';
-import TransactionFilterSheet from './components/transaction-filter-sheet';
-import TransactionFormSheet from './components/transaction-form-sheet';
-import TransactionBulkEditSheet from './components/transaction-bulk-edit-sheet';
 import TransactionBulkDeleteDialog from './components/transaction-bulk-delete-dialog';
-import TransactionUploadMediaSheet from './components/transaction-upload-media-sheet';
-import { dateFull, formatRupiah, strLimit } from '@/lib/utils';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import TransactionBulkEditSheet from './components/transaction-bulk-edit-sheet';
+import TransactionFilterSheet from './components/transaction-filter-sheet';
+import TransactionStatusBadge from './components/transaction-status-badge';
 
 type Props = {
   transactions: Transaction[];
@@ -32,27 +30,7 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
   const { permissions } = usePage<SharedData>().props;
 
   return (
-    <AppLayout
-      title="Transactions"
-      description="Manage your transactions"
-      actions={
-        <>
-          {permissions?.canAdd && (
-            <TransactionFormSheet purpose="create">
-              <Button>
-                <Plus />
-                Create new transaction
-              </Button>
-            </TransactionFormSheet>
-          )}
-          <Button variant={'destructive'} size={'icon'} asChild>
-            <Link href={route('transaction.archived')}>
-              <FolderArchive />
-            </Link>
-          </Button>
-        </>
-      }
-    >
+    <AppLayout title="Transactions" description="Manage your transactions">
       <div className="flex gap-2">
         <Input placeholder="Search transactions..." value={cari} onChange={(e) => setCari(e.target.value)} />
         <TransactionFilterSheet query={query}>
@@ -128,25 +106,31 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                     </Label>
                   </Button>
                 </TableCell>
-                <Link href={route('transaction.show', transaction.id)} className="flex flex-col gap-4 transition-all hover:opacity-75">
-                  <Button variant={'ghost'} size={'sm'} className="justify-start" disabled>
-                    <Calendar1 />
-                    {dateFull(transaction.created_at)}
-                  </Button>
-                  {transaction?.items?.map((item, index) => (
-                    <div key={index} className="flex gap-4">
-                      <Avatar className="size-9 rounded-lg">
-                        <AvatarImage src={item.image} className="object-cover" />
-                      </Avatar>
-                      <CardHeader className="pl-0">
-                        <CardTitle>{strLimit(item.name)}</CardTitle>
-                        <CardDescription>
-                          Price: {formatRupiah(Number(item.price))} - qty: {item.quantity}
-                        </CardDescription>
-                      </CardHeader>
-                    </div>
-                  ))}
-                </Link>
+                <TableCell className="py-6">
+                  <Link href={route('transaction.show', transaction.id)} className="flex flex-col gap-4 transition-all hover:opacity-75">
+                    <Button variant={'ghost'} size={'xs'} className="justify-start" disabled>
+                      <Calendar1 />
+                      {dateFull(transaction.created_at)}
+                    </Button>
+                    {transaction.items.map((item, index) => (
+                      <div key={index} className="flex gap-4">
+                        <Avatar className="size-9 rounded-lg">
+                          <AvatarImage src={item.image} className="object-cover" />
+                        </Avatar>
+                        <CardHeader className="pl-0">
+                          <CardTitle>{strLimit(item.name)}</CardTitle>
+                          <CardDescription>
+                            Price: {formatRupiah(Number(item.price))} - qty: {item.quantity}
+                          </CardDescription>
+                        </CardHeader>
+                      </div>
+                    ))}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <TransactionStatusBadge transaction={transaction} />
+                </TableCell>
+                <TableCell>{formatRupiah(Number(transaction.total_price))}</TableCell>
                 <TableCell>
                   {permissions?.canShow && (
                     <Button variant={'ghost'} size={'icon'}>
@@ -154,27 +138,6 @@ const TransactionList: FC<Props> = ({ transactions, query }) => {
                         <Folder />
                       </Link>
                     </Button>
-                  )}
-                  {permissions?.canUpdate && (
-                    <>
-                      <TransactionUploadMediaSheet transaction={transaction}>
-                        <Button variant={'ghost'} size={'icon'}>
-                          <Image />
-                        </Button>
-                      </TransactionUploadMediaSheet>
-                      <TransactionFormSheet purpose="edit" transaction={transaction}>
-                        <Button variant={'ghost'} size={'icon'}>
-                          <Edit />
-                        </Button>
-                      </TransactionFormSheet>
-                    </>
-                  )}
-                  {permissions?.canDelete && (
-                    <TransactionDeleteDialog transaction={transaction}>
-                      <Button variant={'ghost'} size={'icon'}>
-                        <Trash2 />
-                      </Button>
-                    </TransactionDeleteDialog>
                   )}
                 </TableCell>
               </TableRow>
