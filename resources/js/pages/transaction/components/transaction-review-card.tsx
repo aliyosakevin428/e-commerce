@@ -9,7 +9,7 @@ import { Review } from '@/types/review';
 import { Transaction } from '@/types/transaction';
 import { useForm, usePage } from '@inertiajs/react';
 import { Send, Star } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { toast } from 'sonner';
 
 type Props = {
@@ -31,24 +31,24 @@ const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
     comment: review?.comment ?? '',
   });
 
+  const [hover, setHover] = useState(0);
+
   if (transaction.status !== 'delivered') return null;
   if (permissions?.canAddReview === false) return null;
 
   const handleSubmit = () => {
+    console.log('Submitting review:', data); // debug
+
     if (purpose === 'create' || purpose === 'duplicate') {
       post(route('review.store'), {
         preserveScroll: true,
-        onSuccess: () => {
-          toast.success('Review created successfully');
-        },
+        onSuccess: () => toast.success('Review created successfully'),
         onError: (e) => toast.error(em(e)),
       });
     } else {
       put(route('review.update', review?.id), {
         preserveScroll: true,
-        onSuccess: () => {
-          toast.success('Review updated successfully');
-        },
+        onSuccess: () => toast.success('Review updated successfully'),
         onError: (e) => toast.error(em(e)),
       });
     }
@@ -58,10 +58,10 @@ const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
     <Card className="break-inside-avoid">
       <CardHeader>
         <CardTitle>Review</CardTitle>
-        <CardDescription>Review kamu tentang barang kami</CardDescription>
+        <CardDescription>Bagikan pengalaman kamu terhadap pesanan ini</CardDescription>
       </CardHeader>
+
       <CardContent className="space-y-6">
-        {/* Review Text */}
         <FormControl>
           <Textarea
             placeholder="Tulis review anda..."
@@ -70,29 +70,34 @@ const TransactionReviewCard: FC<Props> = ({ review, purpose }) => {
             className="min-h-32"
           />
         </FormControl>
-
-        {/* Rating */}
       </CardContent>
+
       <Separator />
-      <CardFooter className="flex justify-between">
-        <div className="flex gap-1">
+
+      <CardFooter className="flex items-center justify-between">
+        {/* ⭐ Rating Section */}
+        <div className="flex items-center gap-2">
           {Array.from({ length: 5 }).map((_, index) => {
             const value = index + 1;
             return (
-              <label key={value} className="cursor-pointer">
-                <input
-                  type="radio"
-                  name="rating"
-                  value={value}
-                  checked={data.rating === value}
-                  onChange={() => setData('rating', value as number)}
-                  className="hidden"
-                />
-                <Star size={18} className={`${data.rating >= value ? 'fill-warning stroke-warning' : 'text-warning'}`} />
-              </label>
+              <Star
+                key={value}
+                size={26}
+                onMouseEnter={() => setHover(value)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => {
+                  console.log('Clicked star:', value); // debug
+                  setData('rating', value);
+                }}
+                className={`cursor-pointer transition-all duration-200 ${
+                  value <= (hover ? hover : data.rating) ? 'scale-110 fill-yellow-400 stroke-yellow-400' : 'stroke-gray-400 hover:stroke-yellow-400'
+                }`}
+              />
             );
           })}
+          <span className="text-sm text-muted-foreground">{data.rating}/5</span>
         </div>
+
         <SubmitButton onClick={handleSubmit} loading={processing} label="Simpan" icon={Send} />
       </CardFooter>
     </Card>

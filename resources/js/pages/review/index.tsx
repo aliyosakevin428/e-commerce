@@ -5,16 +5,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { Link, usePage } from '@inertiajs/react';
 import { Edit, Filter, Plus, Star, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
+import ReviewBulkDeleteDialog from './components/review-bulk-delete-dialog';
+import ReviewBulkEditSheet from './components/review-bulk-edit-sheet';
 import ReviewFilterSheet from './components/review-filter-sheet';
 import ReviewFormSheet from './components/review-form-sheet';
-import ReviewBulkEditSheet from './components/review-bulk-edit-sheet';
-import ReviewBulkDeleteDialog from './components/review-bulk-delete-dialog';
-import { cn } from '@/lib/utils';
 
 type Props = {
   reviews: Review[];
@@ -131,7 +131,7 @@ const ReviewList: FC<Props> = ({ reviews, query }) => {
                 <TableCell>
                   <div className="flex">
                     {Array.from({ length: 5 }, (_, index) => (
-                      <Star key={index} size={18} className={cn('stroke-warning', index < review.rating ? 'fill-warning' : '')} />
+                      <Star key={index} size={18} className={cn('stroke-yellow-400', index < review.rating ? 'fill-yellow-400' : '')} />
                     ))}
                   </div>
                 </TableCell>
