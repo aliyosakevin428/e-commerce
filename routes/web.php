@@ -12,6 +12,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TransactionController;
+
 
 
 
@@ -50,6 +52,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('cart/bulk', [CartController::class, 'bulkUpdate'])->name('cart.bulk.update');
     Route::delete('cart/bulk', [CartController::class, 'bulkDelete'])->name('cart.bulk.destroy');
     Route::apiResource('cart', CartController::class);
+    Route::put('transaction/bulk', [TransactionController::class, 'bulkUpdate'])->name('transaction.bulk.update');
+    Route::delete('transaction/bulk', [TransactionController::class, 'bulkDelete'])->name('transaction.bulk.destroy');
+    Route::get('transaction/archived', [TransactionController::class, 'archived'])->name('transaction.archived');
+    Route::put('transaction/{transaction}/restore', [TransactionController::class, 'restore'])->name('transaction.restore');
+    Route::delete('transaction/{transaction}/force-delete', [TransactionController::class, 'forceDelete'])->name('transaction.force-delete');
+    Route::post('transaction/{transaction}/upload-media', [TransactionController::class, 'uploadMedia'])->name('transaction.upload-media');
+    Route::apiResource('transaction', TransactionController::class);
 });
 
 require __DIR__.'/settings.php';

@@ -22,6 +22,10 @@ export function dateDFY(date: string | Date) {
   return dayjs(date).format('DD MMMM YYYY');
 }
 
+export function dateFull(date: string | Date) {
+  return dayjs(date).format('DD MMMM YYYY HH:mm:ss');
+}
+
 export function handlePasteScreenshot(callback: (file: File) => void) {
   const onPaste = (e: ClipboardEvent) => {
     const items = e.clipboardData?.items;
