@@ -16,7 +16,7 @@ class CartFactory extends Factory
         return [
             'product_id' => Product::pluck('id')->random(),
             'user_id' => User::pluck('id')->random(),
-            'quantity' => fake()->numberBetween(1, 5),
+            'qty' => fake()->randomNumber(),
         ];
     }
 }

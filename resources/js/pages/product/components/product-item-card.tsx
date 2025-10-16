@@ -17,7 +17,7 @@ const ProductItemCard: FC<Props> = ({ product }) => {
       route('cart.store'),
       {
         product_id: product.id,
-        quantity: 1,
+        qty: 1,
       },
       {
         preserveScroll: true,

@@ -24,7 +24,7 @@ class UserController extends Controller
 
         return Inertia::render('user/index', [
             'users' => $data->get()->map(function ($user) {
-                return $user->only(['id', 'name', 'email']) + [
+                return $user->only(['id', 'name', 'email', 'address', 'phone']) + [
                     'roles' => $user->getRoleNames(),
                 ];
             }),
@@ -86,7 +86,7 @@ class UserController extends Controller
         $data = $request->validated();
         User::whereIn('id', $data['user_ids'])->update($data);
     }
-    
+
     public function bulkDelete(BulkDeleteUserRequest $request)
     {
         $this->pass('delete user');

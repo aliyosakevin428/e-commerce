@@ -25,6 +25,8 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nullable',
             'email' => 'nullable|email|unique:users,email,'.$this->user->id,
+            'address' => 'nullable',
+            'phone' => 'nullable',
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,name'
         ];
