@@ -5,8 +5,8 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
-  Barcode,
   BookOpen,
+  CreditCard,
   Database,
   Grid2X2,
   Grid2X2Check,
@@ -58,7 +58,7 @@ const mainNavItems: NavItem[] = [
   {
     title: 'Transactions',
     href: route('transaction.index'),
-    icon: Barcode,
+    icon: CreditCard,
   },
   {
     title: 'Reviews',
