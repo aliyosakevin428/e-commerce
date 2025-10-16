@@ -15,7 +15,7 @@ import TransactionFilterSheet from './components/transaction-filter-sheet';
 import TransactionFormSheet from './components/transaction-form-sheet';
 import TransactionBulkEditSheet from './components/transaction-bulk-edit-sheet';
 import TransactionBulkDeleteDialog from './components/transaction-bulk-delete-dialog';
-import TransactionUploadMediaSheet from './components/transaction-upload-sheet';
+import TransactionUploadMediaSheet from './components/transaction-upload-media-sheet';
 import { dateFull, formatRupiah, strLimit } from '@/lib/utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

@@ -3,8 +3,8 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
   user: User;
+  carts: Cart[];
   roles: string[];
-  cartCount: number;
 }
 
 export interface BreadcrumbItem {

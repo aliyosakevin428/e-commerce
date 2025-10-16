@@ -39,6 +39,11 @@ const mainNavItems: NavItem[] = [
     icon: ShoppingCart,
   },
   {
+    title: 'Orders',
+    href: route('order.index'),
+    icon: Database,
+  },
+  {
     title: 'Transactions',
     href: route('transaction.index'),
     icon: Barcode,
