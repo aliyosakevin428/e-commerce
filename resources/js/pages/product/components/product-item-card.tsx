@@ -31,7 +31,7 @@ const ProductItemCard: FC<Props> = ({ product }) => {
   return (
     <Card className="flex flex-col justify-between overflow-hidden">
       {/* Gambar Produk */}
-      <div className="relative h-48 w-full overflow-hidden rounded-t-lg bg-gray-100">
+      <div className="relative h-48 w-full overflow-hidden rounded-t-lg bg-muted">
         <img
           src={product.thumbnail || '/images/no-image.png'}
           alt={product.name}

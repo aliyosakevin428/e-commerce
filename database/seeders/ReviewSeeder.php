@@ -10,7 +10,7 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        Review::factory()->count(10)->create();
+        // Review::factory()->count(10)->create();
 
         // uncommand archived, restore and force delete if Review model has SoftDeletes
         $permissions = [

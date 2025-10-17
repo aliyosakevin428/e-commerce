@@ -10,7 +10,7 @@ class TransactionSeeder extends Seeder
 {
     public function run(): void
     {
-        Transaction::factory()->count(10)->create();
+        Transaction::factory()->count(1)->create();
 
         // uncommand archived, restore and force delete if Transaction model has SoftDeletes
         $permissions = [
