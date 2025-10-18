@@ -16,14 +16,19 @@ type Props = {
 const ShowTransaction: FC<Props> = ({ transaction }) => {
   return (
     <AppLayout title="Detail Transaction" description="Detail transaction">
-      <div className="columns-1 gap-6 space-y-6 lg:columns-2 xl:columns-3">
-        <TransactionStatusStep transaction={transaction} />
-        <TransactionDeliveredAction transaction={transaction} />
-        <TransactionShippingCard transaction={transaction} />
-        <TransactionItemCard items={transaction.items} />
-        <TransactionBuyerInfoCard user={transaction.user} />
-        <TransactionPaymentCard transaction={transaction} />
-        <TransactionReviewCard review={transaction.review} purpose={transaction.review ? 'edit' : 'create'} />
+      <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="col-span-1 space-y-6 xl:col-span-2">
+          <TransactionStatusStep transaction={transaction} />
+          <TransactionDeliveredAction transaction={transaction} />
+          <TransactionShippingCard transaction={transaction} />
+          <TransactionItemCard items={transaction.items} />
+        </div>
+
+        <div className="col-span-1 space-y-6">
+          <TransactionBuyerInfoCard user={transaction.user} />
+          <TransactionPaymentCard transaction={transaction} />
+          <TransactionReviewCard review={transaction.review} purpose={transaction.review ? 'edit' : 'create'} />
+        </div>
       </div>
     </AppLayout>
   );
