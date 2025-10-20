@@ -19,6 +19,6 @@ class WithLandingPageMiddleware
             return redirect()->route('dashboard');
         }
         return $next($request);
-        
+
     }
 }

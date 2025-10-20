@@ -1,84 +1,80 @@
-import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
   BookOpen,
   CreditCard,
   Database,
   Grid2X2,
-  Grid2X2Check,
-  KanbanSquareDashed,
   KeySquare,
-  LayoutGrid,
+  LayoutDashboard,
+  ShoppingBag,
   ShoppingCart,
   Stars,
+  Truck,
   Users,
+  Wallet2,
 } from 'lucide-react';
+
+import { NavFooter } from '@/components/nav-footer';
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
+// Bagian menu utama
 const mainNavItems: NavItem[] = [
-  {
-    title: 'Dashboard',
-    href: route('dashboard'),
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Documentation',
-    href: route('documentation'),
-    icon: BookOpen,
-  },
-  {
-    title: 'Categories',
-    href: route('category.index'),
-    icon: Grid2X2,
-  },
-  {
-    title: 'Couriers',
-    href: route('courier.index'),
-    icon: Grid2X2Check,
-  },
-  {
-    title: 'Products',
-    href: route('product.index'),
-    icon: KanbanSquareDashed,
-  },
-  {
-    title: 'Carts',
-    href: route('cart.index'),
-    icon: ShoppingCart,
-  },
-  {
-    title: 'Orders',
-    href: route('order.index'),
-    icon: Database,
-  },
-  {
-    title: 'Transactions',
-    href: route('transaction.index'),
-    icon: CreditCard,
-  },
-  {
-    title: 'Reviews',
-    href: route('review.index'),
-    icon: Stars,
-  },
+  { title: 'Dashboard', href: route('dashboard'), icon: LayoutDashboard },
+  { title: 'Documentation', href: route('documentation'), icon: BookOpen },
+  { title: 'Couriers', href: route('courier.index'), icon: Truck },
 ];
 
-const footerNavItems: NavItem[] = [];
+// Bagian produk
+const productNavItems: NavItem[] = [
+  { title: 'Products', href: route('product.index'), icon: ShoppingBag },
+  { title: 'Categories', href: route('category.index'), icon: Grid2X2 },
+  { title: 'Carts Items', href: route('cart.index'), icon: ShoppingCart },
+  { title: 'Product Reviews', href: route('review.index'), icon: Stars },
+];
+
+// Bagian transaksi
+const transactionNavItems: NavItem[] = [
+  { title: 'New Orders', href: route('order.index'), icon: Wallet2 },
+  { title: 'Transactions', href: route('transaction.index'), icon: CreditCard },
+];
 
 export function AppSidebar() {
-  const { menus } = usePage<{ menus: Record<string, boolean> }>().props;
+  const { menus } = usePage<{ menus?: Record<string, boolean> }>().props;
+  const availableMenus = menus ?? {};
+
+  const settingsItems: NavItem[] = [
+    {
+      title: 'User Management',
+      href: route('user.index'),
+      icon: Users,
+      available: availableMenus.user,
+    },
+    {
+      title: 'Role & Permission',
+      href: route('role.index'),
+      icon: KeySquare,
+      available: availableMenus.role,
+    },
+    {
+      title: 'Adminer Database',
+      href: '/adminer',
+      icon: Database,
+      available: availableMenus.adminer,
+    },
+  ].filter((item) => item.available !== false);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
+      {/* Header */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard" prefetch>
+              <Link href={route('dashboard')} prefetch>
                 <AppLogo />
               </Link>
             </SidebarMenuButton>
@@ -86,35 +82,17 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="space-y-4">
-        <NavMain items={mainNavItems} label="Dashboard" />
-        <NavMain
-          items={[
-            {
-              title: 'User management',
-              href: route('user.index'),
-              icon: Users,
-              available: menus.user,
-            },
-            {
-              title: 'Role & permission',
-              href: route('role.index'),
-              icon: KeySquare,
-              available: menus.role,
-            },
-            {
-              title: 'Adminer database',
-              href: '/adminer',
-              icon: Database,
-              available: menus.adminer,
-            },
-          ]}
-          label="Settings"
-        />
+      {/* Content */}
+      <SidebarContent>
+        <NavMain items={mainNavItems} label="Main Menu" />
+        <NavMain items={productNavItems} label="Products" />
+        <NavMain items={transactionNavItems} label="Transactions" />
+        {settingsItems.length > 0 && <NavMain items={settingsItems} label="Settings" />}
       </SidebarContent>
 
+      {/* Footer */}
       <SidebarFooter>
-        <NavFooter items={footerNavItems} className="mt-auto" />
+        <NavFooter items={[]} />
         <NavUser />
       </SidebarFooter>
     </Sidebar>
